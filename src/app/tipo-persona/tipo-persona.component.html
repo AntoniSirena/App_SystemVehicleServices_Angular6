@@ -1,0 +1,79 @@
+<div class="container" id="formulario">
+    <br>
+   <h4>Mantenimiento de tipo de persona</h4>
+
+    <div class="row"> 
+        <div class="col-8">
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="controlCodigo">Codigo</label>
+                        <input type="text" [(ngModel)]="agregarTipoPersonas.Codigo"  class="form-control" 
+                            name="codigo" >
+                    </div>
+               </div>
+
+               <div class="col-6">
+                    <div class="form-group">
+                        <label for="controlDescripcion">Descripcion</label>
+                        <input type="text" [(ngModel)]="agregarTipoPersonas.Descripcion" class="form-control" 
+                                name="descripcion" >
+                    </div>
+                </div>
+
+            </div>
+          
+        </div>
+      
+    </div>
+  
+    <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-4">
+                <button (click)="agregarTipoPersona()" class="btn btn-primary" id="agregarTipoPersona">Agregar</button>
+            </div>
+  
+            <div class="col-8">
+                <button (click)="updateTipoPersona()" class="btn btn-primary"  id="updateTipoPersona" >Guardar</button>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+  
+  </div>
+
+
+  
+<div class="container">
+
+        <div class="row">
+          <div class="col-12">
+          <br> 
+          <table class="table table-stripe">
+            <thead>
+              <th>Codigo</th>
+              <th>Descripcion</th>
+            </thead>
+      
+            <tbody>
+              <tr *ngFor="let items of tipoPersonas">
+                <td> {{items.Codigo}} </td>
+                <td> {{items.Descripcion}} </td>
+
+                <td> <button id="editar" (click)="editarTipoPersona(items.Id)" class="btn btn-primary"> Editar</button> </td>
+      
+                <td> <button (click)="eliminarTipoPersona(items.Id)" class="btn btn-danger"> Eliminar </button> </td>
+              </tr>      
+            </tbody>
+            
+          </table>
+      
+          </div>
+      
+        </div>
+      
+      </div>
