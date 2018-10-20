@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PersonaService } from '../service/persona.service';
+declare var $;
 
 
 @Component({
@@ -9,12 +10,23 @@ import { PersonaService } from '../service/persona.service';
 })
 export class PersonaComponent implements OnInit {
 
-  constructor( private personaService: PersonaService) {
+ @ViewChild('dataTable') table;
+ dataTable: any;
+
+   ngOnInit(): void {
+
+    this.dataTable = $(this.table.nativeElement);
+    this.dataTable.dataTable();
+
+   }
+
+   constructor( private personaService: PersonaService) {
     this.obtenerPersonas();
     this.obtenerGeneros();
     this.obtenerTipoPersonas();
 
    }
+
 
 
    agregarPersona: any = {
@@ -137,7 +149,6 @@ export class PersonaComponent implements OnInit {
 
 
 
-  ngOnInit() {
-  }
+
 
 }
