@@ -12,23 +12,115 @@ export class PersonaComponent implements OnInit {
 
  @ViewChild('dataTable') table;
  dataTable: any;
+ dtOptions: any;
 
+   //metodo Init
    ngOnInit(): void {
+   
+    //variable que hace referencia al PersonaComponent
+    let self = this;
+
+    //dataTable
+    this.dtOptions = {
+      "ajax": {
+        url: 'http://localhost:64857/api/persona/getAll',
+        type: 'GET'
+      },
+      columns: [
+        {
+          title: 'ID',
+          data: 'Id'
+        },
+        {
+          title: 'Genero',
+          data: 'Genero.Descripcion' 
+        },
+        {
+          title: 'Tipo Pers',
+          data: 'TipoPersonas.Descripcion' 
+        },
+        {
+          title: 'Primer Nombre',
+          data: 'PrimerNombre' 
+        },
+        {
+          title: 'Segundo Nombre',
+          data: 'SegundoNombre' 
+        },
+        {
+          title: 'Primer Apellido',
+          data: 'PrimerApellido' 
+        },
+        {
+          title: 'Segundo Nombre',
+          data: 'SegundoNombre' 
+        },
+        {
+          title: 'FechaNac',
+          data: 'FechaNacimiento' 
+        },
+        {
+          title: 'Direccion',
+          data: 'Direccion' 
+        },
+        {
+          title: 'Telefono',
+          data: 'Telefono' 
+        },
+        {
+          title: 'Cellular',
+          data: 'Cellular' 
+        },
+        {
+          title: 'Email',
+          data: 'Email' 
+        },
+
+        {
+          data: null, render: function (data, type, row) {
+              return `
+                  <button class="btn btn-primary btn-sm editar"
+                  data-elemnt="${data.Id}">Edit</button> 
+
+                  <button class="btn btn-danger btn-sm delete"
+                          data-elemnt="${data.Id}">Elim</button>
+              `;
+          }
+      }
+
+      ]
+    };
+
+    $(document).on('click', '.editar', function() {
+      let id = $(this).data('elemnt')
+      self.editarPersona(id);
+      $("#Persona").DataTable.ajax.reload();
+    });
+
+  $(document).on('click', '.delete', function() {
+    let id = $(this).data('elemnt')
+    self.eliminarPersona(id);
+    $("#Persona").DataTable.ajax.reload();
+
+  });
 
     this.dataTable = $(this.table.nativeElement);
-    this.dataTable.dataTable();
-
+    this.dataTable.DataTable(this.dtOptions);
+    
    }
 
+
+   //contructor 
    constructor( private personaService: PersonaService) {
     this.obtenerPersonas();
     this.obtenerGeneros();
     this.obtenerTipoPersonas();
+    
 
    }
 
 
-
+   //Objeto persona para mandarlo al servidor
    agregarPersona: any = {
      Id: '',
      GeneroId: '',
