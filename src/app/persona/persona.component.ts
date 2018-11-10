@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef   } from '@angular/core';
 import { PersonaService } from '../service/persona.service';
 declare var $;
 
@@ -17,11 +17,11 @@ export class PersonaComponent implements OnInit {
    //metodo Init
    ngOnInit(): void {
    
-    //variable que hace referencia al PersonaComponent
+    //variable que hace referencia a los metodos de afuera del componente, para poder llamarlo dentro del dataTable.
     let self = this;
 
     //dataTable
-    this.dtOptions = {
+    self.dtOptions = {
       "ajax": {
         url: 'http://localhost:64857/api/persona/getAll',
         type: 'GET'
@@ -52,8 +52,8 @@ export class PersonaComponent implements OnInit {
           data: 'PrimerApellido' 
         },
         {
-          title: 'Segundo Nombre',
-          data: 'SegundoNombre' 
+          title: 'Segundo Apellido',
+          data: 'SegundoApellido' 
         },
         {
           title: 'FechaNac',
@@ -80,7 +80,7 @@ export class PersonaComponent implements OnInit {
           data: null, render: function (data, type, row) {
               return `
                   <button class="btn btn-primary btn-sm editar"
-                  data-elemnt="${data.Id}">Edit</button> 
+                  data-elemnt="${data.Id}"> Edit</button> 
 
                   <button class="btn btn-danger btn-sm delete"
                           data-elemnt="${data.Id}">Elim</button>
@@ -91,36 +91,47 @@ export class PersonaComponent implements OnInit {
       ]
     };
 
+    self.dataTable = $(self.table.nativeElement);
+    self.dataTable.DataTable(self.dtOptions);
+
+    //Evento editar
     $(document).on('click', '.editar', function() {
       let id = $(this).data('elemnt')
       self.editarPersona(id);
-      $("#Persona").DataTable.ajax.reload();
+      //deshabilitar el boton agregarPersonas
+      $('#agregarPersonas').attr('disabled', true);
     });
 
+    //Evento eliminar
   $(document).on('click', '.delete', function() {
     let id = $(this).data('elemnt')
     self.eliminarPersona(id);
-    $("#Persona").DataTable.ajax.reload();
-
   });
 
-    this.dataTable = $(this.table.nativeElement);
-    this.dataTable.DataTable(this.dtOptions);
-    
+  //Evento agregar
+  $(document).on('click', '#agregarPersonas', function() {
+    self.agregarPersonas();
+  });
+   
+  //Evento actualizar
+  $(document).on('click', '#updatePersona', function() {
+    self.updatePersona();
+    //habilitar el boton agregarPersonas
+    $('#agregarPersonas').attr('disabled', false);
+  });
+
    }
 
 
    //contructor 
    constructor( private personaService: PersonaService) {
-    this.obtenerPersonas();
     this.obtenerGeneros();
     this.obtenerTipoPersonas();
-    
 
    }
 
 
-   //Objeto persona para mandarlo al servidor
+   //Objeto persona que bindea el Html para mandarlo al servidor
    agregarPersona: any = {
      Id: '',
      GeneroId: '',
@@ -136,21 +147,16 @@ export class PersonaComponent implements OnInit {
      Email: ''
     }
 
+  //Variable para cacturar las personas
    personas: any = []
 
+   //Variable para cacturar los generos
    generos: any = []
 
+   //Variable para cacturar los tipos de personas
    tipoPersonas: any = []
 
-  
-   //ObtenerPersonas
-   obtenerPersonas(){
-    this.personaService.obtenerPersonas().subscribe(resultado => {
-    this.personas = resultado; 
-    },
-      error => { console.log(JSON.stringify(error));
-      });
-  }
+
 
   //ObtenerGeneros
   obtenerGeneros(){
@@ -170,7 +176,7 @@ export class PersonaComponent implements OnInit {
       });
   }
 
-  //EditarPersonas
+  //Metodo EditarPersonas
   editarPersona(identificador){
     this.personaService.obtenerPersonaById(identificador).subscribe(resultado => {
       this.agregarPersona.Id = resultado.Id;
@@ -192,32 +198,32 @@ export class PersonaComponent implements OnInit {
     }
 
     
-  //Eliminar
+  //Metono Eliminar
   eliminarPersona(identificador){
     this.personaService.eliminarPersona(identificador).subscribe(resultado => {
-    this.obtenerPersonas();    
+      this.dataTable.DataTable().ajax.reload(); //Llamada al DataTable para refrescarlo
     },
     error => { console.log(JSON.stringify(error));
     });
     
    }
  
-  //Agregar
+  //Metono Agregar
    agregarPersonas(){ 
      this.personaService.agregarPersonas(this.agregarPersona).subscribe(resultado => {
        this.reset();
-       this.obtenerPersonas();    
+       this.dataTable.DataTable().ajax.reload();
        },       
        error => { console.log(JSON.stringify(error));
        });   
   
    }
  
-   //Actualizar
+   //Metono Actualizar
    updatePersona(){
      this.personaService.actualizarPersonas(this.agregarPersona).subscribe(resultado => {
        this.reset();
-       this.obtenerPersonas();    
+       this.dataTable.DataTable().ajax.reload();   
        },
        error => { console.log(JSON.stringify(error));
        });  
@@ -238,8 +244,6 @@ export class PersonaComponent implements OnInit {
      this.agregarPersona.GeneroId = '';
      this.agregarPersona.TipoPersonaId = '';
    }
-
-
 
 
 

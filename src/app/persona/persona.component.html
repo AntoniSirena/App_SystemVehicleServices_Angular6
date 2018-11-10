@@ -77,7 +77,7 @@
             <div class="col-3">
                 <div class="form-group">
                     <label for="controlCodigo">Telefono</label>
-                    <input type="text" [(ngModel)]="agregarPersona.Telefono"  class="form-control" 
+                    <input type="tel" [(ngModel)]="agregarPersona.Telefono"  class="form-control" 
                         name="Telefono" >
                 </div>
             </div>
@@ -85,7 +85,7 @@
             <div class="col-3">
                 <div class="form-group">
                     <label for="controlCodigo">Cellular</label>
-                    <input type="text" [(ngModel)]="agregarPersona.Cellular"  class="form-control" 
+                    <input type="tel" [(ngModel)]="agregarPersona.Cellular"  class="form-control" 
                         name="Cellular" >
                 </div>
             </div>
@@ -93,7 +93,7 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="controlCodigo">Email</label>
-                    <input type="text" [(ngModel)]="agregarPersona.Email"  class="form-control" 
+                    <input type="email" [(ngModel)]="agregarPersona.Email"  class="form-control" 
                         name="Email" >
                 </div>
             </div>
@@ -135,11 +135,11 @@
         <div class="col-4">
           <div class="row">
             <div class="col-4">
-                <button (click)="agregarPersonas()" class="btn btn-primary" id="agregarPersonas">Agregar</button>
+                <button class="btn btn-primary" id="agregarPersonas">Agregar</button>
             </div>
-  
+
             <div class="col-8">
-                <button (click)="updatePersona()" class="btn btn-primary"  id="updatePersona" >Guardar</button>
+                <button  class="btn btn-primary"  id="updatePersona" >Actualizar</button>
             </div>
           </div>
   
@@ -149,66 +149,17 @@
   
     </div>
 
-  
-
-
-  
-    <div class="container">
-
-        <div class="row">
-          <div class="col-12">
-          <br> 
-          <table class="table table-stripe">
-            <thead>
-              <th>Genero</th>
-              <th>Tipo</th>
-              <th>PrimerNombre</th>
-              <th>SegundoNombre</th>
-              <th>PrimerApellido</th>
-              <th>SegundoApellido</th>
-              <th>FechaNacimiento</th>
-              <th>Direccion</th>
-              <th>Telefono</th>
-              <th>Cellular</th>
-              <th>Email</th>
-            </thead>
-      
-            <tbody>
-              <tr *ngFor="let items of personas.data">
-                <td> {{items.Genero.Descripcion}} </td>
-                <td> {{items.TipoPersonas.Descripcion}} </td>
-                <td> {{items.PrimerNombre}} </td>
-                <td> {{items.SegundoNombre}} </td>
-                <td> {{items.PrimerApellido}} </td>
-                <td> {{items.SegundoApellido}} </td>
-                <td> {{items.FechaNacimiento}} </td>
-                <td> {{items.Direccion}} </td>
-                <td> {{items.Telefono}} </td>
-                <td> {{items.Cellular}} </td>
-                <td> {{items.Email}} </td>
-
-                <td> <button id="editar" (click)="editarPersona(items.Id)" class="btn btn-primary"> Editar</button> </td>
-      
-                <td> <button (click)="eliminarPersona(items.Id)" class="btn btn-danger"> Eliminar </button> </td>
-              </tr>      
-            </tbody>
-            
-          </table>
-      
-          </div>
-      
-        </div>
-        
-    </div>
-
-
 
 
     <div class="container">
+            <br>
+            <br>
+            <br>
         <div class="row">
             <div class="col-12">
-                <table #dataTable class="display" style="width:100%" id="Persona">
-                    
+                <table #dataTable class="display" style="width:100%" id="tablepersona">
+                   
+                
                 </table>
 
 
